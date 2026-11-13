@@ -1,11 +1,6 @@
 from math import radians, cos, acos, sin, asin, tan, atan2, sqrt, degrees
 from datetime import datetime, timedelta
 
-
-# ---------------------------------------------------------------------------
-# Coordinate helpers
-# ---------------------------------------------------------------------------
-
 def degrees_to_decimals(position):
     """Convert (DD, MM.M) to decimal degrees.
 
@@ -34,10 +29,6 @@ def get_dlong_or_dlat(pos_a, pos_b):
     elif diff < -180:
         diff += 360
     return diff
-
-# ---------------------------------------------------------------------------
-# Plane / parallel sailing
-# ---------------------------------------------------------------------------
 
 _RHUMB_LIMIT   = 600  # nm
 _RHUMB_WARNING = (
@@ -86,11 +77,6 @@ def plane_sailing(latitude_a, longitude_a, latitude_b, longitude_b):
         return distance, course, _RHUMB_WARNING
     return distance, course
 
-
-# ---------------------------------------------------------------------------
-# Great circle helpers
-# ---------------------------------------------------------------------------
-
 def _polar_distance(lat_decimal):
     """Angular distance from the elevated pole to a latitude (degrees, always +ve)."""
     return 90.0 - abs(lat_decimal)
@@ -119,11 +105,6 @@ def _forward_bearing(lat_a_dec, lon_a_dec, lat_b_dec, lon_b_dec):
     y       = cos(la) * sin(lb) - sin(la) * cos(lb) * cos(dlon)
     return round((degrees(atan2(x, y)) + 360) % 360)
 
-
-# ---------------------------------------------------------------------------
-# Great circle sailing
-# ---------------------------------------------------------------------------
-
 def great_circle_sailing(latitude_a, longitude_a, latitude_b, longitude_b):
     """Great circle distance (nm), initial course and final course (both degT).
 
@@ -149,11 +130,6 @@ def great_circle_sailing(latitude_a, longitude_a, latitude_b, longitude_b):
     final_course   = int((_forward_bearing(lat_b, lon_b, lat_a, lon_a) + 180) % 360)
 
     return distance, initial_course, final_course
-
-
-# ---------------------------------------------------------------------------
-# Composite great circle sailing
-# ---------------------------------------------------------------------------
 
 def _napier_right_triangle(pa_deg, pv_deg):
     """Solve the right-angled spherical triangle PAV using Napier's rules.
@@ -245,10 +221,6 @@ def composite_great_circle_sailing(latitude_a, longitude_a,
 
     return round(av + vw + bw, 1), initial_course, final_course
 
-
-# ---------------------------------------------------------------------------
-# ETA helpers
-# ---------------------------------------------------------------------------
 
 def _parse_time(time_tuple):
     """Convert ('DDMMYY', hour, minute) to a datetime object."""
